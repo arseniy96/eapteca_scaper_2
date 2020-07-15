@@ -11,9 +11,9 @@ class ScrapeDirectoryWorker
       # browser.goto "https://www.eapteka.ru/goods/bytovaya_khimiya/?PAGEN_1=#{i + from_page}"
       drug_blocks = browser.divs(class: 'cc-item--info')
       drug_blocks.each do |drug_block|
-        vendor_code = drug_block.div(data_text_before: 'Артикул: ').text
-        # ScrapeItemWorker.perform_async(drug_block.a.href) unless Drug.find_by(vendor_code: vendor_code)
-        ScrapeHouseholdWorker.perform_async(drug_block.a.href) unless Household.find_by(vendor_code: vendor_code)
+        vendor_code = drug_block.span(class: 'rate--article').text.split(" ").last
+        ScrapeItemWorker.perform_async(drug_block.a.href) unless Drug.find_by(vendor_code: vendor_code)
+        # ScrapeHouseholdWorker.perform_async(drug_block.a.href) unless Household.find_by(vendor_code: vendor_code)
         puts "=============="
         puts vendor_code
         vendor_code = nil
