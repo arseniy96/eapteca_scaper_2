@@ -10,9 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2020_07_15_162016) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "drugs", force: :cascade do |t|
+    t.string "name"
+    t.string "barcode"
+    t.string "vendor_code"
+    t.string "description_file"
+    t.string "substance"
+    t.string "form"
+    t.integer "num"
+    t.string "vendor"
+    t.string "composition"
+    t.string "shelf_life"
+    t.string "brand"
+    t.boolean "prescription"
+    t.string "pharm_effect"
+    t.string "indications"
+    t.string "contraindications"
+    t.string "side_effects"
+    t.string "interaction"
+    t.string "cours"
+    t.string "overdose"
+    t.string "special_instruction"
+    t.string "release_form"
+    t.string "storage"
+    t.string "pregnancy"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end
