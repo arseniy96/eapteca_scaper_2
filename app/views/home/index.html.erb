@@ -1,0 +1,17 @@
+<h1>Home#index</h1>
+<p>Find me in app/views/home/index.html.erb</p>
+
+<%= form_with url: scrape_path do |f| %>
+  <div>
+    <%= f.label :from_page, 'Введите номер страницы, с которой необходимо начать парсинг' %><br/>
+    <%= f.text_field :from_page %>
+  </div>
+  <div>
+    <%= f.label :url, 'Выберите категорию товара' %><br/>
+    <%= f.select(:url, options_for_select([['Лекарства', 'https://www.eapteka.ru/goods/drugs/'], ['Бытовая химия', 'https://www.eapteka.ru/goods/bytovaya_khimiya/']])) %>
+  </div>
+
+  <%= f.submit 'Scrape It!' %>
+<% end %>
+
+<%# link_to 'Scrape It!', scrape_path, method: :post %>
