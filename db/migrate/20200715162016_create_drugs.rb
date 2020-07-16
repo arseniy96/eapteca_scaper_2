@@ -24,6 +24,7 @@ class CreateDrugs < ActiveRecord::Migration[5.2]
       t.string :release_form
       t.string :storage
       t.string :pregnancy
+      t.string :image_file
 
       t.timestamps
     end

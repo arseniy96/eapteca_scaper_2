@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2020_07_15_162016) do
     t.string "release_form"
     t.string "storage"
     t.string "pregnancy"
+    t.string "image_file"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

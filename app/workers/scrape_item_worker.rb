@@ -30,7 +30,7 @@ class ScrapeItemWorker
         'Условия хранения' => 'storage',
         'Применение при беременности и кормлении грудью' => 'pregnancy'
       }
-      f = File.open(Rails.root + "public/#{barcode}.html", 'w')
+      f = File.open(Rails.root.join("public/#{barcode}.html"), 'w')
       f.write("<!DOCTYPE html>\n<html lang='en'>\n<head>\n<meta charset='UTF-8'>\n<title>Title</title>\n</head>\n<body>\n")
       f.write "<h1>Штрих-код: #{barcode}</h1>\n"
       f.write "<h2>Артикул: #{vendor_code}</h2>"
@@ -58,21 +58,33 @@ class ScrapeItemWorker
           f.write "<p>" + h3.next_sibling(index: 0).text + "</p>\n"
         end
       end
-      puts params
+      # puts params
       f.write("\n</body>\n</html>")
       f.close
       html_file = File.open(Rails.root + "public/#{barcode}.html")
       params[:description_file] = html_file
+
+      image_url = browser.a(class: "gallery__main-link").href
+      image_file = File.open(Rails.root.join("public/#{barcode}.jpg"), "wb")
+      image_file.write open(image_url).read
+
+      params[:image_file] = image_file
 
       prescription = browser.h3(class: 'offer-instruction__item-title', text: 'Условия отпуска из аптек').next_sibling.text
       params[:prescription] = prescription == 'По рецепту' ? true : false
 
       Drug.create(params)
       html_file.close
+      image_file.close
 
       File.delete(Rails.root + "public/#{barcode}.html") if File.exist?(Rails.root + "public/#{barcode}.html")
+      File.delete(Rails.root + "public/#{barcode}.jpg") if File.exist?(Rails.root + "public/#{barcode}.jpg")
     end
     sleep 3
     browser.close
+  rescue StandardError => e
+    browser.close
+    puts e.to_s
+    raise e
   end
 end
