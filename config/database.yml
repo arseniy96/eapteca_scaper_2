@@ -85,5 +85,5 @@ test:
 production:
   <<: *default
   database: eapteka_scraper_2_production
-  username: eapteka_scraper_2
-  password: <%= ENV['EAPTEKA_SCRAPER_2_DATABASE_PASSWORD'] %>
+  username: <%= ENV['SQL_USER'] %>
+  password: <%= ENV['SQL_PASS'] %>
