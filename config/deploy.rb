@@ -20,7 +20,7 @@ set :ssh_options, { forward_agent: true, user: fetch(:user), keys: %w(~/.ssh/id_
 set :puma_preload_app, true
 set :puma_worker_timeout, nil
 set :puma_init_active_record, true # Change to false when not using ActiveRecord
-set :sidekiq_concurrency, 4
+# set :sidekiq_concurrency, 4
 
 namespace :puma do
   desc 'Create Directories for Puma Pids and Socket'
@@ -36,8 +36,11 @@ end
 
 namespace :sidekiq do
   task :start do
-    run "cd #{deploy_to} && bundle exec sidekiq -c 10 -e production -L log/sidekiq.log -d"
-    p capture("ps aux | grep sidekiq | awk '{print $2}' | sed -n 1p").strip!
+    on roles(:app) do
+      within current_path do
+        execute :bundle, "exec sidekiq -d -e production -C #{current_path}/config/sidekiq.yml"
+      end
+    end
   end
 end
 
@@ -57,7 +60,7 @@ namespace :deploy do
   task :initial do
     on roles(:app) do
       before 'deploy:restart', 'puma:start'
-      before 'deploy:restart', 'sidekiq:start'
+      # before 'deploy:restart', 'sidekiq:start'
       invoke 'deploy'
     end
   end
@@ -69,10 +72,10 @@ namespace :deploy do
     end
   end
 
-  before :starting,     :check_revision
-  after  :finishing,    :compile_assets
-  after  :finishing,    :cleanup
-  after  :finishing,    :restart
+  before :starting, :check_revision
+  after :finishing, :compile_assets
+  after :finishing, :cleanup
+  after :finishing, :restart
 end
 
 # ps aux | grep puma    # Get puma pid

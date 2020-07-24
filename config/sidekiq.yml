@@ -1,0 +1,3 @@
+:concurrency: 6
+:pidfile: tmp/pids/sidekiq-0.pid
+:logfile: /tmp/sidekiq.log
