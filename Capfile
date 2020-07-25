@@ -7,6 +7,7 @@ require 'capistrano/bundler'
 require 'capistrano/rails'
 require 'capistrano/rvm'
 require 'capistrano/puma'
+require 'capistrano/sidekiq'
 require "capistrano/scm/git"
 
 install_plugin Capistrano::Puma

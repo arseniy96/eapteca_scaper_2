@@ -20,7 +20,9 @@ set :ssh_options, { forward_agent: true, user: fetch(:user), keys: %w(~/.ssh/id_
 set :puma_preload_app, true
 set :puma_worker_timeout, nil
 set :puma_init_active_record, true # Change to false when not using ActiveRecord
-# set :sidekiq_concurrency, 4
+set :sidekiq_concurrency, 6
+set :sidekiq_log, "#{release_path}/log/sidekiq.log"
+set :sidekiq_config, "#{release_path}/config/sidekiq.yml"
 
 namespace :puma do
   desc 'Create Directories for Puma Pids and Socket'
@@ -34,15 +36,15 @@ namespace :puma do
   before :start, :make_dirs
 end
 
-namespace :sidekiq do
-  task :start do
-    on roles(:app) do
-      within current_path do
-        execute :bundle, "exec sidekiq -d -e production -C #{current_path}/config/sidekiq.yml"
-      end
-    end
-  end
-end
+# namespace :sidekiq do
+#   task :start do
+#     on roles(:app) do
+#       within current_path do
+#         execute :bundle, "exec sidekiq -d -e production -C #{current_path}/config/sidekiq.yml"
+#       end
+#     end
+#   end
+# end
 
 namespace :deploy do
   desc "Make sure local git is in sync with remote."
@@ -60,7 +62,7 @@ namespace :deploy do
   task :initial do
     on roles(:app) do
       before 'deploy:restart', 'puma:start'
-      # before 'deploy:restart', 'sidekiq:start'
+      before 'deploy:restart', 'sidekiq:start'
       invoke 'deploy'
     end
   end
@@ -69,6 +71,7 @@ namespace :deploy do
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
       invoke 'puma:restart'
+      invoke 'sidekiq:restart'
     end
   end
 
