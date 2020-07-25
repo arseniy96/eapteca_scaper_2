@@ -1,5 +1,6 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.14.1"
+append :linked_files, "config/master.key"
 
 set :application, "eapteka_scraper"
 set :repo_url, "git@github.com:arseniy96/eapteca_scaper_2.git"
@@ -47,6 +48,16 @@ end
 # end
 
 namespace :deploy do
+  namespace :check do
+    before :linked_files, :set_master_key do
+      on roles(:app), in: :sequence, wait: 10 do
+        unless test("[ -f #{shared_path}/config/master.key ]")
+          upload! 'config/master.key', "#{shared_path}/config/master.key"
+        end
+      end
+    end
+  end
+
   desc "Make sure local git is in sync with remote."
   task :check_revision do
     on roles(:app) do
