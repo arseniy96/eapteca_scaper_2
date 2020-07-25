@@ -2,7 +2,7 @@ class ScrapeDirectoryWorker
   include Sidekiq::Worker
 
   def perform(url = 'https://www.eapteka.ru/goods/drugs/', from_page = 1)
-    browser = Watir::Browser.new
+    browser = Watir::Browser.new :chrome, headless: true
     browser.goto url
     pages_count = browser.div(id: 'section_nav_top').ul.lis.last.a.text.to_i - from_page + 1
 
