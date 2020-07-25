@@ -2,6 +2,8 @@
 lock "~> 3.14.1"
 append :linked_files, "config/master.key"
 
+set :rbenv_type, :user # :user or :system, depends on your rbenv setup
+set :rbenv_ruby, File.read('.ruby-version').strip
 set :application, "eapteka_scraper"
 set :repo_url, "git@github.com:arseniy96/eapteca_scaper_2.git"
 set :user, "deploy"

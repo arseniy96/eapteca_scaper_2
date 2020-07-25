@@ -9,6 +9,7 @@ require 'capistrano/rails'
 require 'capistrano/puma'
 require 'capistrano/sidekiq'
 require "capistrano/scm/git"
+require "capistrano/rbenv"
 
 install_plugin Capistrano::Puma
 install_plugin Capistrano::SCM::Git

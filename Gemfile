@@ -30,6 +30,8 @@ group :development do
   gem 'capistrano-rvm', require: false
   gem 'capistrano-sidekiq', require: false
   gem 'capistrano3-puma', require: false
+  gem 'capistrano-rbenv'
+  gem 'capistrano-rbenv-install'
 end
 
 gem 'sidekiq', '~>5.2'
