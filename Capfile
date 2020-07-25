@@ -5,7 +5,7 @@ require "capistrano/setup"
 require 'capistrano/deploy'
 require 'capistrano/bundler'
 require 'capistrano/rails'
-require 'capistrano/rvm'
+# require 'capistrano/rvm'
 require 'capistrano/puma'
 require 'capistrano/sidekiq'
 require "capistrano/scm/git"
