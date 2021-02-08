@@ -36,4 +36,4 @@ end
 
 gem 'sidekiq', '~>5.2'
 gem 'watir'
-gem 'carrierwave', '~> 1.0'
+gem 'carrierwave', '~> 1.3'
