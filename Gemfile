@@ -34,6 +34,6 @@ group :development do
   gem 'capistrano-rbenv-install'
 end
 
-gem 'sidekiq', '~>5.2'
+gem 'sidekiq', '~>6.4'
 gem 'watir'
 gem 'carrierwave', '~> 1.0'
